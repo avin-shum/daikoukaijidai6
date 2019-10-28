@@ -28,6 +28,7 @@ export class CsvParser {
         record.fields[area] += `${
           processedProducts.has(product) ? ',' : port
         }${lv}(${stock})`;
+        record['min-lv'] = Math.min(lv, record['min-lv']);
         processedProducts.add(product);
         items = tempItems;
       }
@@ -47,6 +48,7 @@ export class CsvParser {
     data[product] = data[product] || {
       product: product,
       fields: {},
+      'min-lv': 5,
     };
     data[product]['fields'][area] = data[product]['fields'][area] || '';
     return data[product];

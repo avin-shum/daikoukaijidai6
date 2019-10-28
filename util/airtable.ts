@@ -43,8 +43,13 @@ export class Airtable {
       .all();
     const updateResponse: Promise<any>[] = [];
     records.forEach(record => {
-      const product = record.fields['Product'];
+      const regex = /^\*?(.*)/g;
+      const product: string =
+        (regex.exec(record.fields['Product']) || [,])[1] || '';
       if (newData[product]) {
+        if (newData[product]['min-lv'] === 5) {
+          newData[product].fields['Product'] = '*' + product;
+        }
         updateResponse.push(
           base.update(
             [
