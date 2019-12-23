@@ -1,10 +1,10 @@
 import { Airtable } from './util/airtable';
-import { CsvParser } from './util/csv-parser';
+import { ProductInfo } from './util/product-info';
 
 // 1. Parse from raw data
-const parser = new CsvParser();
+const data = ProductInfo.getData();
 
 // 2. Sync to Airtable
-Airtable.sync(parser.data).then(() => {
+Airtable.sync(data).then(() => {
   console.log('done');
 });

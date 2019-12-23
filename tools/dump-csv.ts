@@ -1,8 +1,7 @@
 import * as fs from 'fs';
 import * as YAML from 'yaml';
-import { CsvParser } from '../util/csv-parser';
+import { ProductInfo } from '../util/product-info';
 
-const parser = new CsvParser();
 const dest = './dump-csv/dump-csv.yaml';
-fs.writeFileSync(`${dest}`, YAML.stringify(parser.data));
+fs.writeFileSync(`${dest}`, YAML.stringify(ProductInfo.getData()));
 console.log(`File written to ${dest}`);
