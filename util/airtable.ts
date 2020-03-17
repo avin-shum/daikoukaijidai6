@@ -21,9 +21,11 @@ export class Airtable {
     });
   }
 
-  public static async sync(newData: { [name: string]: Record }) {
+  public static async sync(newData: {
+    [name: string]: Record;
+  }): Promise<void[]> {
     const config = YAML.parse(fs.readFileSync('./config.yaml', 'utf8'));
-    const groupResponse: Promise<any>[] = [];
+    const groupResponse: Promise<void>[] = [];
     config['product-groups'].forEach(groupName => {
       groupResponse.push(this.syncGroup(groupName, newData));
     });
@@ -33,7 +35,7 @@ export class Airtable {
   private static async syncGroup(
     groupName: string,
     newData: { [name: string]: Record },
-  ) {
+  ): Promise<void> {
     console.log(chalk.green(`>>>> Processing ${groupName}`));
     const base = this.base(groupName);
     const records = await base
@@ -41,11 +43,11 @@ export class Airtable {
         maxRecords: 999,
       })
       .all();
-    const updateResponse: Promise<any>[] = [];
+    const updateResponse: Promise<void>[] = [];
     records.forEach(record => {
       const regex = /^\*?(.*)/g;
       const product: string =
-        (regex.exec(record.fields['Product']) || [,])[1] || '';
+        (regex.exec(record.fields['Product']) || new Array(2))[1] || '';
       if (newData[product]) {
         if (newData[product]['min-lv'] === 5) {
           newData[product].fields['Product'] = '*' + product;

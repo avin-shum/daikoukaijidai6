@@ -2,9 +2,7 @@ import { Record } from '../architecture/record';
 import { CsvReader } from './csv-reader';
 
 export class ProductInfo {
-  static getData(
-    folderPath: string = './raw-data',
-  ): { [name: string]: Record } {
+  static getData(folderPath = './raw-data'): { [name: string]: Record } {
     const out = {};
     CsvReader.read(folderPath, (file, rawData) => {
       const area = file.slice(0, -4);
