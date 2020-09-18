@@ -1,4 +1,4 @@
-import * as AirtableApi from 'airtable';
+import { default as AirtableApi } from 'airtable';
 import chalk from 'chalk';
 import * as fs from 'fs';
 import * as YAML from 'yaml';
@@ -26,7 +26,7 @@ export class Airtable {
   }): Promise<void[]> {
     const config = YAML.parse(fs.readFileSync('./config.yaml', 'utf8'));
     const groupResponse: Promise<void>[] = [];
-    config['product-groups'].forEach(groupName => {
+    config['product-groups'].forEach((groupName) => {
       groupResponse.push(this.syncGroup(groupName, newData));
     });
     return Promise.all(groupResponse);
@@ -43,8 +43,8 @@ export class Airtable {
         maxRecords: 999,
       })
       .all();
-    const updateResponse: Promise<void>[] = [];
-    records.forEach(record => {
+    const updateResponse: Promise<unknown>[] = [];
+    records.forEach((record) => {
       const regex = /^\*?(.*)/g;
       const product: string =
         (regex.exec(record.fields['Product']) || new Array(2))[1] || '';
@@ -60,7 +60,7 @@ export class Airtable {
                 fields: newData[product].fields,
               },
             ],
-            function(err) {
+            function (err) {
               if (err) {
                 console.error(err);
               }
